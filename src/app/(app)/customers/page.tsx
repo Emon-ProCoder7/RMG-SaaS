@@ -16,25 +16,25 @@ async function CustomerTable() {
   const balanceMap = Object.fromEntries(balances.map((b) => [b.id, b.balance]));
 
   return (
-    <Card className="border-0 shadow-md">
+    <Card className="border-0 shadow-md bg-card">
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="bg-indigo-50/50">
-              <TableHead className="font-semibold text-indigo-800">Name</TableHead>
-              <TableHead className="font-semibold text-indigo-800">Mobile</TableHead>
-              <TableHead className="font-semibold text-indigo-800">Address</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Credit Limit</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Balance</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-center">Status</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Actions</TableHead>
+            <TableRow className="bg-black/20">
+              <TableHead className="font-semibold text-amber-200">Name</TableHead>
+              <TableHead className="font-semibold text-amber-200">Mobile</TableHead>
+              <TableHead className="font-semibold text-amber-200">Address</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Credit Limit</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Balance</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {customers.length === 0 ? (
               <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No customers yet. Add your first customer.</TableCell></TableRow>
             ) : customers.map((c) => (
-              <TableRow key={c.id} className="hover:bg-amber-50/30 transition-colors">
+              <TableRow key={c.id} className="hover:bg-amber-500/5 transition-colors">
                 <TableCell>
                   <div>
                     <p className="font-medium">{c.name}</p>
@@ -45,12 +45,12 @@ async function CustomerTable() {
                 <TableCell className="max-w-[200px] truncate">{c.address ?? "—"}</TableCell>
                 <TableCell className="text-right">{formatCurrency(c.credit_limit)}</TableCell>
                 <TableCell className="text-right">
-                  <span className={balanceMap[c.id] > 0 ? "text-amber-700 font-semibold" : "text-green-600"}>
+                  <span className={balanceMap[c.id] > 0 ? "text-amber-400 font-semibold" : "text-green-400"}>
                     {formatCurrency(balanceMap[c.id] ?? 0)}
                   </span>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge variant={c.is_active ? "default" : "secondary"} className={c.is_active ? "bg-green-100 text-green-800" : ""}>
+                  <Badge variant={c.is_active ? "default" : "secondary"} className={c.is_active ? "bg-green-500/15 text-green-300" : ""}>
                     {c.is_active ? "Active" : "Inactive"}
                   </Badge>
                 </TableCell>
@@ -58,8 +58,8 @@ async function CustomerTable() {
                   <div className="flex justify-end gap-1">
                     <CustomerFormDialog customer={c} />
                     <Link href={`/sales?customer=${c.id}`}>
-                      <Button variant="outline" size="icon" className="h-8 w-8" title="View Sales">
-                        <ArrowUpDown className="h-3.5 w-3.5" />
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Eye className="h-3.5 w-3.5" />
                       </Button>
                     </Link>
                   </div>
@@ -77,13 +77,16 @@ export default function CustomersPage() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-indigo-900">Customers</h1>
-          <p className="text-sm text-muted-foreground">Manage your customer ledger and balances</p>
+        <div className="flex items-center gap-3">
+          <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
+          <div>
+            <h1 className="text-2xl font-bold text-amber-50">Customers</h1>
+            <p className="text-sm text-amber-400/60 mt-0.5">Manage your customer base</p>
+          </div>
         </div>
         <CustomerFormDialog />
       </div>
-      <Suspense fallback={<Skeleton className="h-64 rounded-xl" />}>
+      <Suspense fallback={<Skeleton className="h-64 w-full" />}>
         <CustomerTable />
       </Suspense>
     </div>

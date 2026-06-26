@@ -5,7 +5,7 @@ import { supabaseConfigured } from "@/lib/supabase/config";
 export function PreviewBanner() {
   if (supabaseConfigured) return null;
   return (
-    <div className="flex items-center gap-2 border-b bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+    <div className="flex items-center gap-2 border-b border-amber-800/30 bg-amber-500/10 px-4 py-2 text-xs text-amber-300">
       <Info className="size-3.5 shrink-0" />
       <span>
         <strong>Preview mode</strong> — showing sample data. Add your own Supabase

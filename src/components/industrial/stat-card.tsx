@@ -11,24 +11,24 @@ type Props = {
   trend?: { dir: "up" | "down"; pct: string };
   icon: React.ReactNode;
   className?: string;
-  accentColor?: "indigo" | "amber" | "emerald" | "rose";
+  accentColor?: "gold" | "amber" | "green" | "rose";
 };
 
 const ACCENTS = {
-  indigo: "from-indigo-600/20 via-indigo-600/5 to-transparent border-indigo-200/30",
-  amber: "from-amber-500/20 via-amber-500/5 to-transparent border-amber-200/30",
-  emerald: "from-emerald-500/20 via-emerald-500/5 to-transparent border-emerald-200/30",
-  rose: "from-rose-500/20 via-rose-500/5 to-transparent border-rose-200/30",
+  gold: "from-amber-500/20 via-amber-500/5 to-transparent border-amber-700/30",
+  amber: "from-amber-400/15 via-amber-400/5 to-transparent border-amber-600/25",
+  green: "from-green-500/20 via-green-500/5 to-transparent border-green-700/30",
+  rose: "from-rose-500/20 via-rose-500/5 to-transparent border-rose-700/30",
 };
 
 const ICON_BG = {
-  indigo: "bg-indigo-100 text-indigo-700",
-  amber: "bg-amber-100 text-amber-700",
-  emerald: "bg-emerald-100 text-emerald-700",
-  rose: "bg-rose-100 text-rose-700",
+  gold: "bg-amber-500/20 text-amber-300",
+  amber: "bg-amber-400/15 text-amber-200",
+  green: "bg-green-500/20 text-green-300",
+  rose: "bg-rose-500/20 text-rose-300",
 };
 
-export function IndustrialStatCard({ title, value, subtitle, trend, icon, className, accentColor = "indigo" }: Props) {
+export function IndustrialStatCard({ title, value, subtitle, trend, icon, className, accentColor = "gold" }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const valRef = useRef<HTMLSpanElement>(null);
 
@@ -51,29 +51,28 @@ export function IndustrialStatCard({ title, value, subtitle, trend, icon, classN
       ACCENTS[accentColor],
       className
     )}>
-      {/* Industrial corner accent */}
       <div className="absolute top-0 right-0 w-16 h-16">
         <div className="absolute top-0 right-0 w-8 h-0.5 bg-gradient-to-l from-current to-transparent opacity-30" />
         <div className="absolute top-0 right-0 w-0.5 h-8 bg-gradient-to-b from-current to-transparent opacity-30" />
       </div>
 
       <div className="flex items-start justify-between mb-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-indigo-500/70">{title}</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-400/70">{title}</span>
         <div className={cn("p-2 rounded-lg", ICON_BG[accentColor])}>{icon}</div>
       </div>
 
-      <span ref={valRef} className="block text-3xl font-bold tracking-tight text-indigo-900 tabular-nums">{value}</span>
+      <span ref={valRef} className="block text-3xl font-bold tracking-tight text-amber-50 tabular-nums">{value}</span>
 
       <div className="flex items-center gap-2 mt-1.5">
         {trend && (
           <span className={cn(
             "text-xs font-semibold px-1.5 py-0.5 rounded",
-            trend.dir === "up" ? "text-emerald-700 bg-emerald-50" : "text-rose-700 bg-rose-50"
+            trend.dir === "up" ? "text-green-300 bg-green-500/15" : "text-rose-300 bg-rose-500/15"
           )}>
             {trend.dir === "up" ? "↑" : "↓"} {trend.pct}
           </span>
         )}
-        {subtitle && <span className="text-[11px] text-indigo-400/70">{subtitle}</span>}
+        {subtitle && <span className="text-[11px] text-amber-400/60">{subtitle}</span>}
       </div>
     </div>
   );
@@ -81,10 +80,10 @@ export function IndustrialStatCard({ title, value, subtitle, trend, icon, classN
 
 export function StatCardSkeleton() {
   return (
-    <div className="animate-pulse rounded-xl border border-indigo-100/30 bg-white/50 p-5">
-      <div className="h-3 w-24 bg-indigo-200/30 rounded mb-3" />
-      <div className="h-8 w-32 bg-indigo-200/20 rounded mb-2" />
-      <div className="h-3 w-20 bg-indigo-200/20 rounded" />
+    <div className="animate-pulse rounded-xl border border-amber-800/20 bg-card p-5">
+      <div className="h-3 w-24 bg-amber-800/20 rounded mb-3" />
+      <div className="h-8 w-32 bg-amber-800/15 rounded mb-2" />
+      <div className="h-3 w-20 bg-amber-800/15 rounded" />
     </div>
   );
 }

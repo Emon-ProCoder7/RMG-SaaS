@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 
 type Props = { data: number[]; height?: number; color?: string };
 
-export function MiniBarChart({ data, height = 40, color = "#D4A843" }: Props) {
+export function MiniBarChart({ data, height = 40, color = "#C79F5E" }: Props) {
   const barsRef = useRef<HTMLDivElement>(null);
   const max = Math.max(...data, 1);
 

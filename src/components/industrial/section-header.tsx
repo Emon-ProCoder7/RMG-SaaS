@@ -19,9 +19,9 @@ export function IndustrialSectionHeader({ title, subtitle, action, className }: 
       <div>
         <div className="flex items-center gap-3">
           <span className="w-1 h-7 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
-          <h2 className="text-lg font-bold text-indigo-900 tracking-tight">{title}</h2>
+          <h2 className="text-lg font-bold text-amber-50 tracking-tight">{title}</h2>
         </div>
-        {subtitle && <p className="text-xs text-indigo-400/70 mt-1 ml-4">{subtitle}</p>}
+        {subtitle && <p className="text-xs text-amber-400/60 mt-1 ml-4">{subtitle}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>

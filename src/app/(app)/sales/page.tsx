@@ -10,45 +10,47 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Printer } from "lucide-react";
 
 const PAYMENT_BADGES: Record<string, string> = {
-  paid: "bg-green-100 text-green-800", partial: "bg-amber-100 text-amber-800", unpaid: "bg-red-100 text-red-800",
+  paid: "bg-green-500/15 text-green-300",
+  partial: "bg-amber-500/15 text-amber-300",
+  unpaid: "bg-rose-500/15 text-rose-300",
 };
 
 async function InvoiceList() {
   const invoices = await getInvoices();
 
   return (
-    <Card className="border-0 shadow-md">
+    <Card className="border-0 shadow-md bg-card">
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="bg-indigo-50/50">
-              <TableHead className="font-semibold text-indigo-800">Invoice #</TableHead>
-              <TableHead className="font-semibold text-indigo-800">Customer</TableHead>
-              <TableHead className="font-semibold text-indigo-800">Date</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Total</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Paid</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Balance</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-center">Status</TableHead>
-              <TableHead className="font-semibold text-indigo-800 text-right">Print</TableHead>
+            <TableRow className="bg-black/20">
+              <TableHead className="font-semibold text-amber-200">Invoice #</TableHead>
+              <TableHead className="font-semibold text-amber-200">Customer</TableHead>
+              <TableHead className="font-semibold text-amber-200">Date</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Total</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Paid</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Balance</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Print</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {invoices.length === 0 ? (
               <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No sales yet. Create your first invoice.</TableCell></TableRow>
             ) : invoices.map((inv) => (
-              <TableRow key={inv.id} className="hover:bg-amber-50/30 transition-colors">
+              <TableRow key={inv.id} className="hover:bg-amber-500/5 transition-colors">
                 <TableCell className="font-mono text-sm font-medium">{inv.invoice_number}</TableCell>
                 <TableCell>{inv.customer?.name ?? "Walk-in"}</TableCell>
                 <TableCell className="text-sm">{new Date(inv.invoice_date).toLocaleDateString()}</TableCell>
                 <TableCell className="text-right font-medium">{formatCurrency(inv.total)}</TableCell>
                 <TableCell className="text-right">{formatCurrency(inv.amount_paid)}</TableCell>
                 <TableCell className="text-right">
-                  <span className={inv.balance_due > 0 ? "text-amber-700 font-semibold" : "text-green-600"}>
+                  <span className={inv.balance_due > 0 ? "text-amber-400 font-semibold" : "text-green-400"}>
                     {formatCurrency(inv.balance_due)}
                   </span>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge className={PAYMENT_BADGES[inv.payment_status] ?? "bg-gray-100"}>
+                  <Badge className={PAYMENT_BADGES[inv.payment_status] ?? "bg-gray-500/15"}>
                     {inv.payment_status}
                   </Badge>
                 </TableCell>
@@ -70,17 +72,20 @@ export default function SalesPage() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-indigo-900">Sales / Invoicing</h1>
-          <p className="text-sm text-muted-foreground">Create and manage sales invoices</p>
+        <div className="flex items-center gap-3">
+          <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
+          <div>
+            <h1 className="text-2xl font-bold text-amber-50">Sales & Invoices</h1>
+            <p className="text-sm text-amber-400/60 mt-0.5">View and manage all sales invoices</p>
+          </div>
         </div>
         <Link href="/sales/new">
-          <Button className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md hover:shadow-lg">
+          <Button className="bg-gold-metallic text-black font-semibold hover:brightness-110 shadow-lg">
             <Plus className="h-4 w-4 mr-1" /> New Invoice
           </Button>
         </Link>
       </div>
-      <Suspense fallback={<Skeleton className="h-64 rounded-xl" />}>
+      <Suspense fallback={<Skeleton className="h-64 w-full" />}>
         <InvoiceList />
       </Suspense>
     </div>

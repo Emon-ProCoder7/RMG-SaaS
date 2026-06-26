@@ -16,13 +16,13 @@ import {
 export const metadata = { title: "Stock Movements · RMG Suite" };
 
 const TYPE_META: Record<string, { label: string; icon: React.ComponentType<{ className?: string }>; cls: string }> = {
-  in: { label: "Stock in", icon: ArrowDownLeft, cls: "text-emerald-600" },
-  out: { label: "Stock out", icon: ArrowUpRight, cls: "text-red-600" },
-  adjust: { label: "Adjust", icon: Settings2, cls: "text-amber-600" },
-  transfer_in: { label: "Transfer in", icon: ArrowLeftRight, cls: "text-blue-600" },
-  transfer_out: { label: "Transfer out", icon: ArrowLeftRight, cls: "text-purple-600" },
-  damage: { label: "Damage", icon: AlertTriangle, cls: "text-red-700" },
-  return: { label: "Return", icon: RotateCcw, cls: "text-teal-600" },
+  in: { label: "Stock in", icon: ArrowDownLeft, cls: "text-green-400" },
+  out: { label: "Stock out", icon: ArrowUpRight, cls: "text-rose-400" },
+  adjust: { label: "Adjust", icon: Settings2, cls: "text-amber-400" },
+  transfer_in: { label: "Transfer in", icon: ArrowLeftRight, cls: "text-sky-400" },
+  transfer_out: { label: "Transfer out", icon: ArrowLeftRight, cls: "text-purple-400" },
+  damage: { label: "Damage", icon: AlertTriangle, cls: "text-rose-400" },
+  return: { label: "Return", icon: RotateCcw, cls: "text-teal-400" },
 };
 
 export default async function MovementsPage() {
@@ -32,20 +32,24 @@ export default async function MovementsPage() {
   ]);
 
   return (
-    <div>
-      <PageHeader title="Stock Movements" description="History of stock in, out and adjustments.">
-        <MovementsToolbar items={items} />
-      </PageHeader>
+    <div className="p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
+        <div>
+          <h1 className="text-2xl font-bold text-amber-50">Stock Movements</h1>
+          <p className="text-sm text-amber-400/60 mt-0.5">History of stock in, out and adjustments.</p>
+        </div>
+      </div>
 
-      <div className="rounded-lg border">
+      <div className="rounded-lg border bg-card">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>When</TableHead>
-              <TableHead>Item</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead className="text-right">Qty</TableHead>
-              <TableHead>Note</TableHead>
+            <TableRow className="bg-black/20">
+              <TableHead className="text-amber-200">When</TableHead>
+              <TableHead className="text-amber-200">Item</TableHead>
+              <TableHead className="text-amber-200">Type</TableHead>
+              <TableHead className="text-amber-200 text-right">Qty</TableHead>
+              <TableHead className="text-amber-200">Note</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -60,7 +64,7 @@ export default async function MovementsPage() {
                 const meta = TYPE_META[m.type];
                 const Icon = meta.icon;
                 return (
-                  <TableRow key={m.id}>
+                  <TableRow key={m.id} className="hover:bg-amber-500/5">
                     <TableCell className="text-muted-foreground">
                       {formatDateTime(m.created_at)}
                     </TableCell>

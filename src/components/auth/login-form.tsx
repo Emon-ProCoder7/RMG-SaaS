@@ -46,23 +46,23 @@ export function LoginForm({ configured }: { configured: boolean }) {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm bg-card border-amber-800/30 shadow-xl">
       <CardHeader className="items-center text-center">
         <img src="/logo.png" alt="RMG Suite" className="mb-2 size-12" />
-        <CardTitle className="text-xl">
+        <CardTitle className="text-xl text-amber-50">
           {mode === "signin" ? "Sign in" : "Create account"}
         </CardTitle>
-        <CardDescription>RMG Suite — inventory & operations</CardDescription>
+        <CardDescription className="text-amber-400/60">RMG Suite — inventory & operations</CardDescription>
       </CardHeader>
 
       {!configured ? (
         <CardContent className="space-y-4">
-          <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+          <div className="rounded-md border border-amber-700/40 bg-amber-500/10 p-3 text-sm text-amber-300">
             Authentication is disabled in <strong>preview mode</strong>. Add your
             Supabase keys to <code className="font-mono">.env.local</code> to
             enable login.
           </div>
-          <Button className="w-full" render={<Link href="/dashboard" />}>
+          <Button className="w-full bg-gold-metallic text-black font-semibold" render={<Link href="/dashboard" />}>
             Continue to preview →
           </Button>
         </CardContent>
@@ -70,11 +70,11 @@ export function LoginForm({ configured }: { configured: boolean }) {
         <form onSubmit={onSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-amber-200">Email</Label>
               <Input id="email" name="email" type="email" required autoComplete="email" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-amber-200">Password</Label>
               <Input
                 id="password"
                 name="password"
@@ -86,7 +86,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-gold-metallic text-black font-semibold hover:brightness-110 shadow-lg" disabled={loading}>
               {loading
                 ? "Please wait…"
                 : mode === "signin"
@@ -95,7 +95,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
             </Button>
             <button
               type="button"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-sm text-amber-400/60 hover:text-amber-300"
               onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
             >
               {mode === "signin"

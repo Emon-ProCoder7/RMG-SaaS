@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/format";
 import { recordReturn } from "@/lib/inventory/actions";
 import type { Customer, ItemWithCategory } from "@/lib/inventory/types";
@@ -54,13 +53,16 @@ export default function ReturnsPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto" ref={animRef}>
-      <h1 className="text-2xl font-bold text-indigo-900 mb-6">Returns</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
+        <h1 className="text-2xl font-bold text-amber-50">Returns</h1>
+      </div>
 
-      <Card className="border-0 shadow-md">
-        <CardHeader><CardTitle className="text-lg text-indigo-800"><Undo2 className="h-5 w-5 inline mr-2" />Record a Return</CardTitle></CardHeader>
+      <Card className="border-0 shadow-md bg-card">
+        <CardHeader><CardTitle className="text-lg text-amber-100"><Undo2 className="h-5 w-5 inline mr-2" />Record a Return</CardTitle></CardHeader>
         <CardContent>
           {message && (
-            <div className={`mb-4 p-3 rounded-lg text-sm ${message.ok ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+            <div className={`mb-4 p-3 rounded-lg text-sm ${message.ok ? "bg-green-500/15 text-green-300 border border-green-700/40" : "bg-rose-500/15 text-rose-300 border border-rose-700/40"}`}>
               {message.text}
             </div>
           )}
@@ -69,7 +71,7 @@ export default function ReturnsPage() {
               <div>
                 <Label>Customer</Label>
                 <Select value={customerId} onValueChange={(v: string | null) => v && setCustomerId(v)}>
-                  <SelectTrigger className="border-indigo-200"><SelectValue placeholder="Optional" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Optional" /></SelectTrigger>
                   <SelectContent>
                     {customers.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                   </SelectContent>
@@ -77,12 +79,12 @@ export default function ReturnsPage() {
               </div>
               <div>
                 <Label>Invoice #</Label>
-                <Input value={invoiceId} onChange={(e) => setInvoiceId(e.target.value)} placeholder="Optional" className="border-indigo-200" />
+                <Input value={invoiceId} onChange={(e) => setInvoiceId(e.target.value)} placeholder="Optional" />
               </div>
               <div>
                 <Label>Item *</Label>
                 <Select value={itemId} onValueChange={(v: string | null) => v && setItemId(v)}>
-                  <SelectTrigger className="border-indigo-200"><SelectValue placeholder="Select item..." /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Select item..." /></SelectTrigger>
                   <SelectContent>
                     {items.map((i) => <SelectItem key={i.id} value={i.id}>{i.name} (Stock: {i.quantity})</SelectItem>)}
                   </SelectContent>
@@ -90,18 +92,18 @@ export default function ReturnsPage() {
               </div>
               <div>
                 <Label>Quantity *</Label>
-                <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value) || 1)} className="border-indigo-200" />
+                <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value) || 1)} />
               </div>
               <div>
                 <Label>Return Amount (BDT)</Label>
-                <Input type="number" step="0.01" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value) || 0)} className="border-indigo-200" />
+                <Input type="number" step="0.01" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value) || 0)} />
               </div>
               <div>
                 <Label>Reason</Label>
-                <Input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Damaged / Wrong item" className="border-indigo-200" />
+                <Input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Damaged / Wrong item" />
               </div>
             </div>
-            <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md">
+            <Button type="submit" disabled={submitting} className="bg-gold-metallic text-black font-semibold shadow-md hover:brightness-110">
               {submitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
               Record Return
             </Button>
