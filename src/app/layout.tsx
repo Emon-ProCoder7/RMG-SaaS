@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RMG Suite",
   description: "Inventory & operations for ready-made garments businesses.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
