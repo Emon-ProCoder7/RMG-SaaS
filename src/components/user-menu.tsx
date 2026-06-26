@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -30,7 +31,6 @@ export function UserMenu({
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/login");
-    router.refresh();
   }
 
   const label = email ?? (configured ? "Account" : "Preview user");
@@ -46,10 +46,12 @@ export function UserMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="flex items-center gap-2 font-normal">
-          <User className="size-4" />
-          <span className="truncate text-sm">{label}</span>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="flex items-center gap-2 font-normal">
+            <User className="size-4" />
+            <span className="truncate text-sm">{label}</span>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut} disabled={!configured}>
           <LogOut className="size-4" />
