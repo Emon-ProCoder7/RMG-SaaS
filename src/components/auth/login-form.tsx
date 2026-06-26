@@ -47,7 +47,8 @@ export function LoginForm({ configured }: { configured: boolean }) {
 
   return (
     <Card className="w-full max-w-sm">
-      <CardHeader>
+      <CardHeader className="items-center text-center">
+        <img src="/logo.png" alt="RMG Suite" className="mb-2 size-12" />
         <CardTitle className="text-xl">
           {mode === "signin" ? "Sign in" : "Create account"}
         </CardTitle>

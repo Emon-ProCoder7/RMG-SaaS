@@ -59,9 +59,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-[#D4A843] text-[#1E3A5F] font-bold text-sm">
-            R
-          </div>
+          <img src="/logo.png" alt="RMG Suite" className="size-8 rounded-lg" />
           <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate font-semibold">RMG Suite</span>
             <span className="truncate text-xs text-sidebar-foreground/60">
