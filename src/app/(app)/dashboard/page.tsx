@@ -8,7 +8,7 @@ import { IndustrialBgShapes } from "@/components/industrial/bg-shapes";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Package, TrendingUp, AlertTriangle, Layers, ShoppingCart, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { getMockBestSellers } from "@/lib/reports";
+import { getBestSellers } from "@/lib/reports";
 import type { BestSeller } from "@/lib/reports";
 
 async function StatsGrid() {
@@ -30,7 +30,7 @@ async function StatsGrid() {
 }
 
 async function BestSellersPanel() {
-  const bestSellers = await getMockBestSellers();
+  const bestSellers = await getBestSellers();
   const maxPct = bestSellers.length > 0 ? bestSellers[0].pctOfTotal : 1;
 
   return (

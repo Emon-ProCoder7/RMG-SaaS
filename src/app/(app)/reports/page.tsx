@@ -7,11 +7,11 @@ import { IndustrialBgShapes } from "@/components/industrial/bg-shapes";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign, TrendingUp, BarChart3, Calculator, ShoppingCart, RotateCcw } from "lucide-react";
-import { getMockProfitReport, getMockBestSellers, getMockReorderRecommendations } from "@/lib/reports";
+import { getProfitReport, getBestSellers, getReorderRecommendations, getSalesHistory } from "@/lib/reports";
 import { DemandForecastCard, ZakatCalculator } from "./components/report-widgets";
 
 async function ProfitPanel() {
-  const data = await getMockProfitReport();
+  const data = await getProfitReport();
 
   return (
     <section className="mb-8">
@@ -61,7 +61,7 @@ async function ProfitPanel() {
 }
 
 async function BestSellersPanel() {
-  const bestSellers = await getMockBestSellers();
+  const bestSellers = await getBestSellers();
   const maxPct = bestSellers.length > 0 ? bestSellers[0].pctOfTotal : 1;
 
   return (
@@ -97,7 +97,7 @@ async function BestSellersPanel() {
 }
 
 async function ReorderPanel() {
-  const recommendations = await getMockReorderRecommendations();
+  const recommendations = await getReorderRecommendations();
 
   return (
     <section className="mb-8">
@@ -138,6 +138,11 @@ async function ReorderPanel() {
   );
 }
 
+async function DemandForecastCardWrapper() {
+  const history = await getSalesHistory();
+  return <DemandForecastCard history={history} />;
+}
+
 export default function ReportsPage() {
   return (
     <div className="p-6 relative z-10">
@@ -165,7 +170,7 @@ export default function ReportsPage() {
 
         <div className="mb-8">
           <Suspense fallback={<div className="h-80 rounded-xl bg-amber-900/15 animate-pulse" />}>
-            <DemandForecastCard />
+            <DemandForecastCardWrapper />
           </Suspense>
         </div>
 

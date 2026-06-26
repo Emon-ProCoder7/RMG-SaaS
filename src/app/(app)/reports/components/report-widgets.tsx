@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/format";
-import { calculateZakat, forecastDemand, getMockSalesHistory } from "@/lib/reports";
-import type { ZakatResult } from "@/lib/reports";
+import { calculateZakat, forecastDemand } from "@/lib/reports/client";
+import type { ZakatResult } from "@/lib/reports/client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IndustrialSectionHeader } from "@/components/industrial/section-header";
@@ -92,9 +92,8 @@ function ZakatResultCard({ result }: { result: ZakatResult }) {
   );
 }
 
-export function DemandForecastCard() {
+export function DemandForecastCard({ history }: { history: { date: string; qty: number }[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const history = getMockSalesHistory();
   const [periods, setPeriods] = useState(4);
   const forecast = forecastDemand(history, periods);
 
