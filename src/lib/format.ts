@@ -1,12 +1,17 @@
-/** Display currency for the app. Change here to switch (e.g. "BDT", "EUR"). */
-export const CURRENCY = "USD";
+/** Display currency for the app. */
+export const CURRENCY = "BDT";
 
 export function formatCurrency(value: number, currency = CURRENCY): string {
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("en-BD", {
     style: "currency",
     currency,
     maximumFractionDigits: 2,
+    currencyDisplay: "symbol",
   }).format(value);
+}
+
+export function formatCurrencySimple(value: number): string {
+  return "৳ " + value.toLocaleString("en-BD", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 export function formatNumber(value: number): string {

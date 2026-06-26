@@ -49,72 +49,72 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: #FAF8F5;
+  --foreground: #2D2D2D;
+  --card: #FFFFFF;
+  --card-foreground: #2D2D2D;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D2D2D;
+  --primary: #1E3A5F;
+  --primary-foreground: #FAF8F5;
+  --secondary: #F5F0EB;
+  --secondary-foreground: #1E3A5F;
+  --muted: #F0ECE6;
+  --muted-foreground: #6B7280;
+  --accent: #D4A843;
+  --accent-foreground: #1E3A5F;
+  --destructive: #C44536;
+  --border: #E5E1DB;
+  --input: #E5E1DB;
+  --ring: #D4A843;
+  --chart-1: #1E3A5F;
+  --chart-2: #D4A843;
+  --chart-3: #0D7377;
+  --chart-4: #C44536;
+  --chart-5: #1E3A5F;
+  --radius: 0.5rem;
+  --sidebar: #1E3A5F;
+  --sidebar-foreground: #FAF8F5;
+  --sidebar-primary: #D4A843;
+  --sidebar-primary-foreground: #1E3A5F;
+  --sidebar-accent: #2A4F7A;
+  --sidebar-accent-foreground: #FAF8F5;
+  --sidebar-border: #2A4F7A;
+  --sidebar-ring: #D4A843;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #1A1A1A;
+  --foreground: #F0ECE6;
+  --card: #2A2A2A;
+  --card-foreground: #F0ECE6;
+  --popover: #2A2A2A;
+  --popover-foreground: #F0ECE6;
+  --primary: #D4A843;
+  --primary-foreground: #1A1A1A;
+  --secondary: #2A2A2A;
+  --secondary-foreground: #D4A843;
+  --muted: #333333;
+  --muted-foreground: #9CA3AF;
+  --accent: #D4A843;
+  --accent-foreground: #FFFFFF;
+  --destructive: #C44536;
+  --border: #333333;
+  --input: #333333;
+  --ring: #D4A843;
+  --chart-1: #D4A843;
+  --chart-2: #1E3A5F;
+  --chart-3: #0D7377;
+  --chart-4: #C44536;
+  --chart-5: #D4A843;
+  --sidebar: #1A1A1A;
+  --sidebar-foreground: #F0ECE6;
+  --sidebar-primary: #D4A843;
+  --sidebar-primary-foreground: #1A1A1A;
+  --sidebar-accent: #2A2A2A;
+  --sidebar-accent-foreground: #D4A843;
+  --sidebar-border: #333333;
+  --sidebar-ring: #D4A843;
 }
 
 @layer base {
@@ -127,4 +127,12 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Invoice print styles */
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; left: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
 }

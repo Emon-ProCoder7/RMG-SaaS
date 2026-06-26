@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight, Settings2 } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Settings2, RotateCcw, AlertTriangle, ArrowLeftRight } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { MovementsToolbar } from "@/components/inventory/movements-toolbar";
 import { getItems, getRecentMovements } from "@/lib/inventory/queries";
@@ -15,11 +15,15 @@ import {
 
 export const metadata = { title: "Stock Movements · RMG Suite" };
 
-const TYPE_META = {
+const TYPE_META: Record<string, { label: string; icon: React.ComponentType<{ className?: string }>; cls: string }> = {
   in: { label: "Stock in", icon: ArrowDownLeft, cls: "text-emerald-600" },
   out: { label: "Stock out", icon: ArrowUpRight, cls: "text-red-600" },
   adjust: { label: "Adjust", icon: Settings2, cls: "text-amber-600" },
-} as const;
+  transfer_in: { label: "Transfer in", icon: ArrowLeftRight, cls: "text-blue-600" },
+  transfer_out: { label: "Transfer out", icon: ArrowLeftRight, cls: "text-purple-600" },
+  damage: { label: "Damage", icon: AlertTriangle, cls: "text-red-700" },
+  return: { label: "Return", icon: RotateCcw, cls: "text-teal-600" },
+};
 
 export default async function MovementsPage() {
   const [movements, items] = await Promise.all([
