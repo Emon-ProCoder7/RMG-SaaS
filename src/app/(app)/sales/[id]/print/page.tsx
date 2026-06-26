@@ -51,8 +51,8 @@ export default function PrintInvoicePage() {
           <div className="text-center border-b-2 border-gray-800 pb-4 mb-4">
             {isDubai && customer?.name_ar && <h2 className="text-xl mb-1" dir="rtl">{customer.name_ar}</h2>}
             <div className="flex items-center justify-center gap-3 mb-2">
-              <img src="/logo.png" alt="RMG Trading" className="h-10 w-10" />
-              <h1 className="text-2xl font-bold">RMG TRADING</h1>
+              <img src="/logo.png" alt="Labiba Fashion" className="h-10 w-10" />
+              <h1 className="text-2xl font-bold">Labiba Fashion</h1>
             </div>
             <p className="text-sm">Dhaka, Bangladesh</p>
             <p className="text-xs">VAT Reg: 1234567890</p>
@@ -132,7 +132,7 @@ export default function PrintInvoicePage() {
           )}
 
           <div className="text-center mt-4 text-xs text-gray-500 border-t border-gray-300 pt-2">
-            <p>RMG Trading — Dhaka, Bangladesh | {invoice.invoice_number}</p>
+            <p>Labiba Fashion — Dhaka, Bangladesh | {invoice.invoice_number}</p>
           </div>
         </div>
       </div>
