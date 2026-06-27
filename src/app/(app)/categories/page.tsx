@@ -35,10 +35,9 @@ export default async function CategoriesPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
+                <TableHead className="hidden md:table-cell">Description</TableHead>
                 <TableHead className="text-right">Items</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -52,7 +51,7 @@ export default async function CategoriesPage() {
               categories.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell className="font-medium">{c.name}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="text-muted-foreground hidden md:table-cell">
                     {c.description ?? "—"}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">

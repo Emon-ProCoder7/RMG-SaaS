@@ -28,11 +28,11 @@ async function ProfitPanel() {
             <TableHeader>
               <TableRow className="bg-black/20">
                 <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider">Product</TableHead>
-                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right">Units Sold</TableHead>
+                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right hidden md:table-cell">Units Sold</TableHead>
                 <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right">Revenue</TableHead>
-                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right">Cost</TableHead>
+                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right hidden md:table-cell">Cost</TableHead>
                 <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right">Profit</TableHead>
-                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right">Margin</TableHead>
+                <TableHead className="text-amber-200 font-semibold text-xs uppercase tracking-wider text-right hidden md:table-cell">Margin</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -41,11 +41,11 @@ async function ProfitPanel() {
               ) : data.rows.map((row) => (
                 <TableRow key={row.itemId} className="hover:bg-amber-500/5 transition-colors">
                   <TableCell className="font-medium text-amber-100">{row.itemName}</TableCell>
-                  <TableCell className="text-right tabular-nums">{row.qtySold}</TableCell>
+                  <TableCell className="text-right tabular-nums hidden md:table-cell">{row.qtySold}</TableCell>
                   <TableCell className="text-right tabular-nums">{formatCurrency(row.revenue)}</TableCell>
-                  <TableCell className="text-right tabular-nums">{formatCurrency(row.cost)}</TableCell>
+                  <TableCell className="text-right tabular-nums hidden md:table-cell">{formatCurrency(row.cost)}</TableCell>
                   <TableCell className="text-right tabular-nums font-semibold">{formatCurrency(row.profit)}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right hidden md:table-cell">
                     <span className={`tabular-nums font-medium ${row.margin >= 20 ? "text-green-400" : row.margin >= 10 ? "text-amber-400" : "text-rose-400"}`}>
                       {row.margin.toFixed(1)}%
                     </span>
@@ -148,7 +148,7 @@ export default function ReportsPage() {
     <div className="p-6 relative z-10">
       <IndustrialBgShapes />
       <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex flex-wrap items-center gap-3 mb-8">
           <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
           <div>
             <h1 className="text-3xl font-bold text-amber-50 tracking-tight">Reports & Analytics</h1>

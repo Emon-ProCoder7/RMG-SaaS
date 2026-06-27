@@ -118,7 +118,7 @@ export default function NewSalePage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto" ref={animRef}>
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
         <h1 className="text-2xl font-bold text-amber-50">New Invoice</h1>
       </div>
@@ -132,7 +132,7 @@ export default function NewSalePage() {
             <CardContent>
               <div className="mb-4">
                 <Label>Customer</Label>
-                <Select value={customerId} onValueChange={onCustChange}>
+                <Select value={customerId} onValueChange={onCustChange} items={Object.fromEntries(customers.map(c => [c.id, c.name]))}>
                   <SelectTrigger><SelectValue placeholder="Select customer..." /></SelectTrigger>
                   <SelectContent>
                     {customers.map((c) => (
@@ -181,7 +181,7 @@ export default function NewSalePage() {
                   <TableHeader>
                     <TableRow className="bg-black/20">
                       <TableHead className="text-amber-200">Item</TableHead>
-                      <TableHead className="text-amber-200 text-center">Stock</TableHead>
+                      <TableHead className="text-amber-200 text-center hidden md:table-cell">Stock</TableHead>
                       <TableHead className="text-amber-200 text-right">Qty</TableHead>
                       <TableHead className="text-amber-200 text-right">Price</TableHead>
                       <TableHead className="text-amber-200 text-right">Total</TableHead>
@@ -195,7 +195,7 @@ export default function NewSalePage() {
                           <p className="font-medium text-sm">{line.description}</p>
                           {line.barcode && <p className="text-xs text-muted-foreground">{line.barcode}</p>}
                         </TableCell>
-                        <TableCell className="text-center text-sm">{line.stock}</TableCell>
+                        <TableCell className="text-center text-sm hidden md:table-cell">{line.stock}</TableCell>
                         <TableCell className="text-right">
                           <Input type="number" min={1} max={line.stock} value={line.qty}
                             onChange={(e) => updateLine(line.tempId, "qty", Math.max(1, Math.min(line.stock, parseInt(e.target.value) || 1)))}

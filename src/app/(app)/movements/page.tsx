@@ -33,7 +33,7 @@ export default async function MovementsPage() {
 
   return (
     <div className="p-6">
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
         <div>
           <h1 className="text-2xl font-bold text-amber-50">Stock Movements</h1>
@@ -49,7 +49,7 @@ export default async function MovementsPage() {
               <TableHead className="text-amber-200">Item</TableHead>
               <TableHead className="text-amber-200">Type</TableHead>
               <TableHead className="text-amber-200 text-right">Qty</TableHead>
-              <TableHead className="text-amber-200">Note</TableHead>
+              <TableHead className="text-amber-200 hidden md:table-cell">Note</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -80,7 +80,7 @@ export default async function MovementsPage() {
                     <TableCell className="text-right tabular-nums">
                       {formatNumber(Number(m.quantity))} {m.item?.unit ?? ""}
                     </TableCell>
-                    <TableCell className="text-muted-foreground">
+                    <TableCell className="text-muted-foreground hidden md:table-cell">
                       {m.note ?? "—"}
                     </TableCell>
                   </TableRow>

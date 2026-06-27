@@ -19,10 +19,10 @@ async function SupplierTable() {
           <TableHeader>
             <TableRow className="bg-black/20">
               <TableHead className="font-semibold text-amber-200">Name</TableHead>
-              <TableHead className="font-semibold text-amber-200">Contact</TableHead>
-              <TableHead className="font-semibold text-amber-200">Phone</TableHead>
-              <TableHead className="font-semibold text-amber-200">Address</TableHead>
-              <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Contact</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Phone</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Address</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-center hidden md:table-cell">Status</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -32,10 +32,10 @@ async function SupplierTable() {
             ) : suppliers.map((s) => (
               <TableRow key={s.id} className="hover:bg-amber-500/5 transition-colors">
                 <TableCell className="font-medium">{s.name}</TableCell>
-                <TableCell>{s.contact_person ?? "—"}</TableCell>
-                <TableCell>{s.phone ?? "—"}</TableCell>
-                <TableCell className="max-w-[200px] truncate">{s.address ?? "—"}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="hidden md:table-cell">{s.contact_person ?? "—"}</TableCell>
+                <TableCell className="hidden md:table-cell">{s.phone ?? "—"}</TableCell>
+                <TableCell className="max-w-[200px] truncate hidden md:table-cell">{s.address ?? "—"}</TableCell>
+                <TableCell className="text-center hidden md:table-cell">
                   <Badge variant={s.is_active ? "default" : "secondary"} className={s.is_active ? "bg-green-500/15 text-green-300" : ""}>
                     {s.is_active ? "Active" : "Inactive"}
                   </Badge>
@@ -58,7 +58,7 @@ async function SupplierTable() {
 export default function SuppliersPage() {
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
           <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
           <div>

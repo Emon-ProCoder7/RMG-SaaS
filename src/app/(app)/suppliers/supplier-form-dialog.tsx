@@ -37,7 +37,7 @@ export function SupplierFormDialog({ supplier }: Props) {
           <DialogTitle className="text-amber-100">{supplier ? "Edit Supplier" : "New Supplier"}</DialogTitle>
           <DialogDescription>Enter supplier details.</DialogDescription>
         </DialogHeader>
-        <form ref={formRef} action={formAction} className="grid grid-cols-2 gap-4">
+        <form ref={formRef} action={formAction} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {supplier && <input type="hidden" name="id" value={supplier.id} />}
           <div className="col-span-2">
             <Label htmlFor="name">Company Name *</Label>

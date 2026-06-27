@@ -40,7 +40,7 @@ export function CustomerFormDialog({ customer }: Props) {
           <DialogTitle className="text-amber-100">{isEdit ? "Edit Customer" : "New Customer"}</DialogTitle>
           <DialogDescription>Fill in the customer details below.</DialogDescription>
         </DialogHeader>
-        <form ref={formRef} action={formAction} className="grid grid-cols-2 gap-4">
+        <form ref={formRef} action={formAction} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {isEdit && <input type="hidden" name="id" value={customer.id} />}
           <div className="col-span-2">
             <Label htmlFor="name">Full Name *</Label>

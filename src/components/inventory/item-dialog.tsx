@@ -74,7 +74,7 @@ export function ItemDialog({
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="col-span-2 space-y-2">
               <Label htmlFor="name">Name *</Label>
               <Input id="name" name="name" defaultValue={item?.name ?? ""} required />
@@ -88,6 +88,7 @@ export function ItemDialog({
               <Select
                 value={categoryId}
                 onValueChange={(v) => setCategoryId(v ?? UNCATEGORIZED)}
+                items={Object.fromEntries([...categories.map(c => [c.id, c.name]), [UNCATEGORIZED, "Uncategorized"]])}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />

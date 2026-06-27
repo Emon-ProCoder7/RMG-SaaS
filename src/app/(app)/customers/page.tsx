@@ -24,11 +24,11 @@ async function CustomerTable() {
           <TableHeader>
             <TableRow className="bg-black/20">
               <TableHead className="font-semibold text-amber-200">Name</TableHead>
-              <TableHead className="font-semibold text-amber-200">Mobile</TableHead>
-              <TableHead className="font-semibold text-amber-200">Address</TableHead>
-              <TableHead className="font-semibold text-amber-200 text-right">Credit Limit</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Mobile</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Address</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right hidden md:table-cell">Credit Limit</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Balance</TableHead>
-              <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-center hidden md:table-cell">Status</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -43,15 +43,15 @@ async function CustomerTable() {
                     {c.name_ar && <p className="text-xs text-muted-foreground" dir="rtl">{c.name_ar}</p>}
                   </div>
                 </TableCell>
-                <TableCell>{c.mobile ?? "—"}</TableCell>
-                <TableCell className="max-w-[200px] truncate">{c.address ?? "—"}</TableCell>
-                <TableCell className="text-right">{formatCurrency(c.credit_limit)}</TableCell>
+                <TableCell className="hidden md:table-cell">{c.mobile ?? "—"}</TableCell>
+                <TableCell className="max-w-[200px] truncate hidden md:table-cell">{c.address ?? "—"}</TableCell>
+                <TableCell className="text-right hidden md:table-cell">{formatCurrency(c.credit_limit)}</TableCell>
                 <TableCell className="text-right">
                   <span className={balanceMap[c.id] > 0 ? "text-amber-400 font-semibold" : "text-green-400"}>
                     {formatCurrency(balanceMap[c.id] ?? 0)}
                   </span>
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center hidden md:table-cell">
                   <Badge variant={c.is_active ? "default" : "secondary"} className={c.is_active ? "bg-green-500/15 text-green-300" : ""}>
                     {c.is_active ? "Active" : "Inactive"}
                   </Badge>
@@ -79,7 +79,7 @@ async function CustomerTable() {
 export default function CustomersPage() {
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
           <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
           <div>

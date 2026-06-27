@@ -100,10 +100,10 @@ export function ItemsTable({
           <TableHeader>
             <TableRow>
               <TableHead>Item</TableHead>
-              <TableHead>SKU</TableHead>
-              <TableHead>Category</TableHead>
+              <TableHead className="hidden md:table-cell">SKU</TableHead>
+              <TableHead className="hidden md:table-cell">Category</TableHead>
               <TableHead className="text-right">Stock</TableHead>
-              <TableHead className="text-right">Cost</TableHead>
+              <TableHead className="text-right hidden md:table-cell">Cost</TableHead>
               <TableHead className="text-right">Value</TableHead>
               <TableHead className="w-10" />
             </TableRow>
@@ -121,10 +121,10 @@ export function ItemsTable({
                 return (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell className="text-muted-foreground">
+                    <TableCell className="text-muted-foreground hidden md:table-cell">
                       {item.sku ?? "—"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {item.category?.name ? (
                         <Badge variant="secondary">{item.category.name}</Badge>
                       ) : (
@@ -141,7 +141,7 @@ export function ItemsTable({
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell className="text-right tabular-nums">
+                    <TableCell className="text-right tabular-nums hidden md:table-cell">
                       {formatCurrency(Number(item.cost_price))}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">

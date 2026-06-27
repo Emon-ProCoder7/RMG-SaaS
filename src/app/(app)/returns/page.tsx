@@ -53,7 +53,7 @@ export default function ReturnsPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto" ref={animRef}>
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
         <h1 className="text-2xl font-bold text-amber-50">Returns</h1>
       </div>
@@ -67,10 +67,10 @@ export default function ReturnsPage() {
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Customer</Label>
-                <Select value={customerId} onValueChange={(v: string | null) => v && setCustomerId(v)}>
+                <Select value={customerId} onValueChange={(v: string | null) => v && setCustomerId(v)} items={Object.fromEntries(customers.map(c => [c.id, c.name]))}>
                   <SelectTrigger><SelectValue placeholder="Optional" /></SelectTrigger>
                   <SelectContent>
                     {customers.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
@@ -83,7 +83,7 @@ export default function ReturnsPage() {
               </div>
               <div>
                 <Label>Item *</Label>
-                <Select value={itemId} onValueChange={(v: string | null) => v && setItemId(v)}>
+                <Select value={itemId} onValueChange={(v: string | null) => v && setItemId(v)} items={Object.fromEntries(items.map(i => [i.id, i.name]))}>
                   <SelectTrigger><SelectValue placeholder="Select item..." /></SelectTrigger>
                   <SelectContent>
                     {items.map((i) => <SelectItem key={i.id} value={i.id}>{i.name} (Stock: {i.quantity})</SelectItem>)}

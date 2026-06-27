@@ -78,7 +78,7 @@ export function MovementDialog({
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label>Item</Label>
-            <Select value={itemId} onValueChange={(v) => setItemId(v ?? "")}>
+            <Select value={itemId} onValueChange={(v) => setItemId(v ?? "")} items={Object.fromEntries(items.map(i => [i.id, i.name]))}>
               <SelectTrigger>
                 <SelectValue placeholder="Select item" />
               </SelectTrigger>
@@ -93,7 +93,7 @@ export function MovementDialog({
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Type</Label>
               <Select

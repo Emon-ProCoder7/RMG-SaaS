@@ -28,10 +28,10 @@ async function InvoiceList() {
             <TableRow className="bg-black/20">
               <TableHead className="font-semibold text-amber-200">Invoice #</TableHead>
               <TableHead className="font-semibold text-amber-200">Customer</TableHead>
-              <TableHead className="font-semibold text-amber-200">Date</TableHead>
+              <TableHead className="font-semibold text-amber-200 hidden md:table-cell">Date</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Total</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Paid</TableHead>
-              <TableHead className="font-semibold text-amber-200 text-right">Balance</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right hidden md:table-cell">Balance</TableHead>
               <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
@@ -43,10 +43,10 @@ async function InvoiceList() {
               <TableRow key={inv.id} className="hover:bg-amber-500/5 transition-colors">
                 <TableCell className="font-mono text-sm font-medium">{inv.invoice_number}</TableCell>
                 <TableCell>{inv.customer?.name ?? "Walk-in"}</TableCell>
-                <TableCell className="text-sm">{new Date(inv.invoice_date).toLocaleDateString()}</TableCell>
+                <TableCell className="text-sm hidden md:table-cell">{new Date(inv.invoice_date).toLocaleDateString()}</TableCell>
                 <TableCell className="text-right font-medium">{formatCurrency(inv.total)}</TableCell>
                 <TableCell className="text-right">{formatCurrency(inv.amount_paid)}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right hidden md:table-cell">
                   <span className={inv.balance_due > 0 ? "text-amber-400 font-semibold" : "text-green-400"}>
                     {formatCurrency(inv.balance_due)}
                   </span>
@@ -76,7 +76,7 @@ async function InvoiceList() {
 export default function SalesPage() {
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
           <span className="w-1.5 h-10 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full" />
           <div>
