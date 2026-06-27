@@ -315,6 +315,8 @@ export async function deleteInvoice(id: string): Promise<ActionResult> {
       }
     }
   }
+  // Clean up stock movements linked to this invoice
+  await supabase.from("stock_movements").delete().eq("reference_id", id);
   const { error } = await supabase.from("sales_invoices").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidateAll();
@@ -358,6 +360,14 @@ export async function recordReturn(fd: FormData): Promise<ActionResult> {
     reference_type: "return", reference_id: invoice_id, created_by: user?.id ?? null,
   });
   if (movErr) return { ok: false, error: movErr.message };
+
+  // Increase item quantity in inventory
+  const { data: currentItem } = await supabase.from("items").select("quantity").eq("id", item_id).single();
+  if (currentItem) {
+    await supabase.from("items").update({
+      quantity: Number(currentItem.quantity) + quantity,
+    }).eq("id", item_id);
+  }
 
   // Add credit ledger entry (return = negative amount, reduces customer balance)
   if (customer_id) {
