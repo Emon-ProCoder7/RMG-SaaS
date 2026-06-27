@@ -11,12 +11,20 @@ import { Label } from "@/components/ui/label";
 import { IndustrialSectionHeader } from "@/components/industrial/section-header";
 import { Card, CardContent } from "@/components/ui/card";
 
-export function ZakatCalculator() {
+export function ZakatCalculator({
+  inventoryValue: initialInventory,
+  receivables: initialReceivables,
+  payables: initialPayables,
+}: {
+  inventoryValue: number;
+  receivables: number;
+  payables: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [cash, setCash] = useState(2500000);
-  const [inventory, setInventory] = useState(3800000);
-  const [receivables, setReceivables] = useState(950000);
-  const [payables, setPayables] = useState(1200000);
+  const [cash, setCash] = useState(0);
+  const [inventory, setInventory] = useState(initialInventory);
+  const [receivables, setReceivables] = useState(initialReceivables);
+  const [payables, setPayables] = useState(initialPayables);
 
   const result = calculateZakat(cash, inventory, receivables, payables);
 

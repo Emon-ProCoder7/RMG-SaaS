@@ -7,7 +7,7 @@ import { IndustrialBgShapes } from "@/components/industrial/bg-shapes";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign, TrendingUp, BarChart3, Calculator, ShoppingCart, RotateCcw } from "lucide-react";
-import { getProfitReport, getBestSellers, getReorderRecommendations, getSalesHistory } from "@/lib/reports";
+import { getProfitReport, getBestSellers, getReorderRecommendations, getSalesHistory, getZakatData } from "@/lib/reports";
 import { DemandForecastCard, ZakatCalculator } from "./components/report-widgets";
 
 async function ProfitPanel() {
@@ -143,6 +143,11 @@ async function DemandForecastCardWrapper() {
   return <DemandForecastCard history={history} />;
 }
 
+async function ZakatCalculatorWrapper() {
+  const data = await getZakatData();
+  return <ZakatCalculator {...data} />;
+}
+
 export default function ReportsPage() {
   return (
     <div className="p-6 relative z-10">
@@ -175,7 +180,9 @@ export default function ReportsPage() {
         </div>
 
         <div className="mb-8">
-          <ZakatCalculator />
+          <Suspense fallback={<div className="h-48 rounded-xl bg-amber-900/15 animate-pulse" />}>
+            <ZakatCalculatorWrapper />
+          </Suspense>
         </div>
       </div>
     </div>

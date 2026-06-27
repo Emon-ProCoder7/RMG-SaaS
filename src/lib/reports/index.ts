@@ -157,6 +157,46 @@ export function forecastDemand(sales: { date: string; qty: number }[], periodsAh
 
 // ── Zakat Calculator ──
 
+export type ZakatInputs = {
+  inventoryValue: number;
+  receivables: number;
+  payables: number;
+};
+
+export async function getZakatData(): Promise<ZakatInputs> {
+  return queryOrMock(async () => {
+    const supabase = await sb();
+
+    const { data: items } = await supabase
+      .from("items")
+      .select("quantity, cost_price");
+    const inventoryValue = (items ?? []).reduce(
+      (sum: number, i: any) => sum + Number(i.quantity) * Number(i.cost_price),
+      0,
+    );
+
+    const { data: invoices } = await supabase
+      .from("sales_invoices")
+      .select("balance_due")
+      .in("payment_status", ["unpaid", "partial"]);
+    const receivables = (invoices ?? []).reduce(
+      (sum: number, inv: any) => sum + Number(inv.balance_due),
+      0,
+    );
+
+    const { data: pos } = await supabase
+      .from("purchase_orders")
+      .select("total")
+      .in("status", ["pending", "partial"]);
+    const payables = (pos ?? []).reduce(
+      (sum: number, po: any) => sum + Number(po.total),
+      0,
+    );
+
+    return { inventoryValue, receivables, payables };
+  }, { inventoryValue: 3800000, receivables: 950000, payables: 1200000 });
+}
+
 export function calculateZakat(cashInBank: number, inventoryValue: number, receivables: number, payables: number): ZakatResult {
   const inventoryZakatable = inventoryValue * 0.85;
   const totalAssets = cashInBank + inventoryZakatable + receivables;
