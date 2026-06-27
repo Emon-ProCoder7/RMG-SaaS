@@ -300,21 +300,33 @@ export async function createInvoice(fd: FormData): Promise<ActionResult> {
 export async function deleteInvoice(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
+
+  // Get sale items for quantity restoration
   const { data: saleItems } = await supabase.from("sale_items").select("*").eq("invoice_id", id);
+  // Get return movements linked to this invoice to avoid double-restoring
+  const { data: returnMoves } = await supabase.from("stock_movements")
+    .select("item_id, quantity").eq("reference_id", id).eq("type", "return");
+  const returnQtyMap = new Map((returnMoves ?? []).map((r: any) => [r.item_id, Number(r.quantity)]));
+
   const { error: err0 } = await supabase.from("credit_ledger").delete().eq("invoice_id", id);
   if (err0) return { ok: false, error: err0.message };
-  // Restore inventory quantities
+
+  // Restore inventory quantities (subtract returns already restored)
   if (saleItems) {
     for (const si of saleItems) {
       if (!si.item_id) continue;
+      const returnedQty = returnQtyMap.get(si.item_id) ?? 0;
+      const netRestore = Number(si.quantity) - returnedQty;
+      if (netRestore === 0) continue;
       const { data: current } = await supabase.from("items").select("quantity").eq("id", si.item_id).single();
       if (current) {
         await supabase.from("items").update({
-          quantity: Number(current.quantity) + Number(si.quantity),
+          quantity: Math.max(0, Number(current.quantity) + netRestore),
         }).eq("id", si.item_id);
       }
     }
   }
+
   // Clean up stock movements linked to this invoice
   await supabase.from("stock_movements").delete().eq("reference_id", id);
   const { error } = await supabase.from("sales_invoices").delete().eq("id", id);
@@ -375,6 +387,16 @@ export async function recordReturn(fd: FormData): Promise<ActionResult> {
       customer_id, type: "return", amount: -amount, reference: `Return: ${str(fd, "reason") ?? item_id}`,
       invoice_id: invoice_id ?? null, created_by: user?.id ?? null,
     });
+  }
+
+  // Update invoice balance_due if a return references an invoice
+  if (invoice_id) {
+    const { data: inv } = await supabase.from("sales_invoices").select("balance_due").eq("id", invoice_id).single();
+    if (inv) {
+      const newBalance = Math.max(0, Number(inv.balance_due) - amount);
+      const newStatus = newBalance <= 0 ? "paid" : "partial";
+      await supabase.from("sales_invoices").update({ balance_due: newBalance, payment_status: newStatus }).eq("id", invoice_id);
+    }
   }
 
   revalidateAll();
