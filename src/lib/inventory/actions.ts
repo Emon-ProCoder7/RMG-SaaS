@@ -103,6 +103,14 @@ export async function recordMovement(fd: FormData): Promise<ActionResult> {
     item_id, type, quantity, note: str(fd, "note"), store_id: str(fd, "store_id"), created_by: user?.id ?? null,
   });
   if (error) return { ok: false, error: error.message };
+  // Update item quantity
+  const { data: current } = await supabase.from("items").select("quantity").eq("id", item_id).single();
+  if (current) {
+    const delta = type === "in" || type === "return" ? quantity : -quantity;
+    await supabase.from("items").update({
+      quantity: Math.max(0, Number(current.quantity) + delta),
+    }).eq("id", item_id);
+  }
   revalidateAll();
   return { ok: true };
 }
@@ -249,6 +257,28 @@ export async function createInvoice(fd: FormData): Promise<ActionResult> {
     }, { onConflict: "customer_id,item_id", ignoreDuplicates: false });
   }
 
+  // Deduct inventory quantities and create stock movements
+  for (const item of items) {
+    const { error: deductErr } = await supabase.rpc("decrement_item_quantity", {
+      p_item_id: item.item_id,
+      p_quantity: item.quantity,
+    });
+    if (deductErr) {
+      // Fallback: update directly
+      const { data: current } = await supabase.from("items").select("quantity").eq("id", item.item_id).single();
+      if (current) {
+        await supabase.from("items").update({
+          quantity: Math.max(0, Number(current.quantity) - item.quantity),
+        }).eq("id", item.item_id);
+      }
+    }
+    await supabase.from("stock_movements").insert({
+      item_id: item.item_id, type: "out", quantity: item.quantity,
+      reference_type: "sale", reference_id: invoiceId,
+      note: `Sale ${invoice_number}`, created_by: user?.id ?? null,
+    });
+  }
+
   // Add credit ledger entry
   await supabase.from("credit_ledger").insert({
     customer_id, type: "sale", amount: total, reference: invoice_number, invoice_id: invoiceId,
@@ -270,8 +300,21 @@ export async function createInvoice(fd: FormData): Promise<ActionResult> {
 export async function deleteInvoice(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
+  const { data: saleItems } = await supabase.from("sale_items").select("*").eq("invoice_id", id);
   const { error: err0 } = await supabase.from("credit_ledger").delete().eq("invoice_id", id);
   if (err0) return { ok: false, error: err0.message };
+  // Restore inventory quantities
+  if (saleItems) {
+    for (const si of saleItems) {
+      if (!si.item_id) continue;
+      const { data: current } = await supabase.from("items").select("quantity").eq("id", si.item_id).single();
+      if (current) {
+        await supabase.from("items").update({
+          quantity: Number(current.quantity) + Number(si.quantity),
+        }).eq("id", si.item_id);
+      }
+    }
+  }
   const { error } = await supabase.from("sales_invoices").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidateAll();
