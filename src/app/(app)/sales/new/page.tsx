@@ -254,7 +254,7 @@ export default function NewSalePage() {
               <div className="space-y-2 pt-2">
                 <div>
                   <Label className="text-xs">Payment Method</Label>
-                  <Select value={paymentMethod} onValueChange={onPayChange}>
+                  <Select value={paymentMethod} onValueChange={onPayChange} items={{ cash: "Cash", bank: "Bank Transfer", credit: "Credit", bKash: "bKash", Nagad: "Nagad" }}>
                     <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="cash">Cash</SelectItem>

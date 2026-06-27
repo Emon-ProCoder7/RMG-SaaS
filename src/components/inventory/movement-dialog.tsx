@@ -99,6 +99,7 @@ export function MovementDialog({
               <Select
                 value={type}
                 onValueChange={(v) => setType((v as MovementType) ?? "in")}
+                items={{ in: "Stock in (+)", out: "Stock out (−)", adjust: "Adjust (=)" }}
               >
                 <SelectTrigger>
                   <SelectValue />
