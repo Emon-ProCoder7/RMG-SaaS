@@ -205,6 +205,9 @@ export default function NewSalePage() {
                           <Input type="number" step="0.01" value={line.price}
                             onChange={(e) => updateLine(line.tempId, "price", parseFloat(e.target.value) || 0)}
                             className="w-24 h-8 text-right ml-auto" />
+                          {priceHistory.has(line.itemId) && priceHistory.get(line.itemId) !== line.price && (
+                            <p className="text-[10px] text-amber-400/60 mt-0.5">Prev: ৳{priceHistory.get(line.itemId)}</p>
+                          )}
                         </TableCell>
                         <TableCell className="text-right font-medium">{formatCurrency(line.qty * line.price)}</TableCell>
                         <TableCell>
