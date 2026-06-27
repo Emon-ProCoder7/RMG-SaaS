@@ -46,7 +46,7 @@ export async function createItem(fd: FormData): Promise<ActionResult> {
     supplier_id: str(fd, "supplier_id"), supplier: str(fd, "supplier"), location: str(fd, "location"),
     color: str(fd, "color"), size: str(fd, "size"), season: str(fd, "season"), department: str(fd, "department"),
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -65,7 +65,7 @@ export async function updateItem(fd: FormData): Promise<ActionResult> {
     supplier_id: str(fd, "supplier_id"), supplier: str(fd, "supplier"), location: str(fd, "location"),
     color: str(fd, "color"), size: str(fd, "size"), season: str(fd, "season"), department: str(fd, "department"),
   }).eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -82,7 +82,7 @@ export async function deleteItem(id: string): Promise<ActionResult> {
   const { error: err4 } = await supabase.from("damage_records").delete().eq("item_id", id);
   if (err4) return { ok: false, error: err4.message };
   const { error } = await supabase.from("items").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -102,7 +102,7 @@ export async function recordMovement(fd: FormData): Promise<ActionResult> {
   const { error } = await supabase.from("stock_movements").insert({
     item_id, type, quantity, note: str(fd, "note"), store_id: str(fd, "store_id"), created_by: user?.id ?? null,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   // Update item quantity
   const { data: current } = await supabase.from("items").select("quantity").eq("id", item_id).single();
   if (current) {
@@ -123,7 +123,7 @@ export async function createCategory(fd: FormData): Promise<ActionResult> {
   if (!name) return { ok: false, error: "Category name is required." };
   const supabase = await createClient();
   const { error } = await supabase.from("categories").insert({ name, description: str(fd, "description") });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidatePath("/categories");
   revalidatePath("/inventory");
   return { ok: true };
@@ -140,7 +140,7 @@ export async function createCustomer(fd: FormData): Promise<ActionResult> {
     vat_no: str(fd, "vat_no"), ledger_book_no: str(fd, "ledger_book_no"),
     opening_bl: num(fd, "opening_bl"), credit_limit: num(fd, "credit_limit"),
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -156,7 +156,7 @@ export async function updateCustomer(fd: FormData): Promise<ActionResult> {
     vat_no: str(fd, "vat_no"), ledger_book_no: str(fd, "ledger_book_no"),
     opening_bl: num(fd, "opening_bl"), credit_limit: num(fd, "credit_limit"),
   }).eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -175,7 +175,7 @@ export async function deleteCustomer(id: string): Promise<ActionResult> {
     if (err2) return { ok: false, error: err2.message };
   }
   const { error } = await supabase.from("customers").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -190,7 +190,7 @@ export async function createSupplier(fd: FormData): Promise<ActionResult> {
     email: str(fd, "email"), address: str(fd, "address"), vat_no: str(fd, "vat_no"),
     payment_terms: str(fd, "payment_terms"),
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -203,7 +203,7 @@ export async function deleteSupplier(id: string): Promise<ActionResult> {
   const { error: err1 } = await supabase.from("purchase_orders").delete().eq("supplier_id", id);
   if (err1) return { ok: false, error: err1.message };
   const { error } = await supabase.from("suppliers").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -330,7 +330,7 @@ export async function deleteInvoice(id: string): Promise<ActionResult> {
   // Clean up stock movements linked to this invoice
   await supabase.from("stock_movements").delete().eq("reference_id", id);
   const { error } = await supabase.from("sales_invoices").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -339,7 +339,7 @@ export async function deletePurchaseOrder(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
   const { error } = await supabase.from("purchase_orders").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidateAll();
   return { ok: true };
 }
@@ -348,7 +348,7 @@ export async function deleteCategory(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
   const { error } = await supabase.from("categories").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "Something went wrong" };
   revalidatePath("/categories");
   revalidatePath("/inventory");
   return { ok: true };
