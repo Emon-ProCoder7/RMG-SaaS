@@ -9,6 +9,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Eye, ArrowUpDown } from "lucide-react";
 import { CustomerFormDialog } from "./customer-form-dialog";
+import { DeleteButton } from "@/components/delete-button";
+import { deleteCustomer } from "@/lib/inventory/actions";
 
 async function CustomerTable() {
   const customers = await getCustomers();
@@ -62,6 +64,7 @@ async function CustomerTable() {
                         <Eye className="h-3.5 w-3.5" />
                       </Button>
                     </Link>
+                    <DeleteButton id={c.id} label={c.name} action={deleteCustomer} />
                   </div>
                 </TableCell>
               </TableRow>

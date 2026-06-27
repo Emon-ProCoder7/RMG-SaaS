@@ -73,6 +73,14 @@ export async function updateItem(fd: FormData): Promise<ActionResult> {
 export async function deleteItem(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
+  const { error: err1 } = await supabase.from("sale_items").delete().eq("item_id", id);
+  if (err1) return { ok: false, error: err1.message };
+  const { error: err2 } = await supabase.from("purchase_items").delete().eq("item_id", id);
+  if (err2) return { ok: false, error: err2.message };
+  const { error: err3 } = await supabase.from("stock_transfer_items").delete().eq("item_id", id);
+  if (err3) return { ok: false, error: err3.message };
+  const { error: err4 } = await supabase.from("damage_records").delete().eq("item_id", id);
+  if (err4) return { ok: false, error: err4.message };
   const { error } = await supabase.from("items").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidateAll();
@@ -148,6 +156,16 @@ export async function updateCustomer(fd: FormData): Promise<ActionResult> {
 export async function deleteCustomer(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
+  const { data: invoices } = await supabase.from("sales_invoices").select("id").eq("customer_id", id);
+  const invoiceIds = (invoices ?? []).map((i: any) => i.id);
+  if (invoiceIds.length > 0) {
+    const { error: err0 } = await supabase.from("credit_ledger").delete().in("invoice_id", invoiceIds);
+    if (err0) return { ok: false, error: err0.message };
+    const { error: err1 } = await supabase.from("credit_ledger").delete().eq("customer_id", id);
+    if (err1) return { ok: false, error: err1.message };
+    const { error: err2 } = await supabase.from("sales_invoices").delete().eq("customer_id", id);
+    if (err2) return { ok: false, error: err2.message };
+  }
   const { error } = await supabase.from("customers").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidateAll();
@@ -172,6 +190,10 @@ export async function createSupplier(fd: FormData): Promise<ActionResult> {
 export async function deleteSupplier(id: string): Promise<ActionResult> {
   if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
   const supabase = await createClient();
+  const { error: err0 } = await supabase.from("items").update({ supplier_id: null }).eq("supplier_id", id);
+  if (err0) return { ok: false, error: err0.message };
+  const { error: err1 } = await supabase.from("purchase_orders").delete().eq("supplier_id", id);
+  if (err1) return { ok: false, error: err1.message };
   const { error } = await supabase.from("suppliers").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidateAll();
@@ -243,6 +265,36 @@ export async function createInvoice(fd: FormData): Promise<ActionResult> {
 
   revalidateAll();
   return { ok: true, error: invoice_number };
+}
+
+export async function deleteInvoice(id: string): Promise<ActionResult> {
+  if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
+  const supabase = await createClient();
+  const { error: err0 } = await supabase.from("credit_ledger").delete().eq("invoice_id", id);
+  if (err0) return { ok: false, error: err0.message };
+  const { error } = await supabase.from("sales_invoices").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateAll();
+  return { ok: true };
+}
+
+export async function deletePurchaseOrder(id: string): Promise<ActionResult> {
+  if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
+  const supabase = await createClient();
+  const { error } = await supabase.from("purchase_orders").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateAll();
+  return { ok: true };
+}
+
+export async function deleteCategory(id: string): Promise<ActionResult> {
+  if (!supabaseConfigured) return { ok: false, error: PREVIEW_MSG };
+  const supabase = await createClient();
+  const { error } = await supabase.from("categories").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/categories");
+  revalidatePath("/inventory");
+  return { ok: true };
 }
 
 export async function recordReturn(fd: FormData): Promise<ActionResult> {

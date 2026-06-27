@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Printer } from "lucide-react";
+import { DeleteButton } from "@/components/delete-button";
+import { deleteInvoice } from "@/lib/inventory/actions";
 
 const PAYMENT_BADGES: Record<string, string> = {
   paid: "bg-green-500/15 text-green-300",
@@ -31,7 +33,7 @@ async function InvoiceList() {
               <TableHead className="font-semibold text-amber-200 text-right">Paid</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Balance</TableHead>
               <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
-              <TableHead className="font-semibold text-amber-200 text-right">Print</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -55,9 +57,12 @@ async function InvoiceList() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Link href={`/sales/${inv.id}/print`}>
-                    <Button variant="ghost" size="icon" className="h-8 w-8"><Printer className="h-3.5 w-3.5" /></Button>
-                  </Link>
+                  <div className="flex justify-end gap-1">
+                    <Link href={`/sales/${inv.id}/print`}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8"><Printer className="h-3.5 w-3.5" /></Button>
+                    </Link>
+                    <DeleteButton id={inv.id} label={inv.invoice_number} action={deleteInvoice} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

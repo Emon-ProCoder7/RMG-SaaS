@@ -6,6 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { SupplierFormDialog } from "./supplier-form-dialog";
+import { DeleteButton } from "@/components/delete-button";
+import { deleteSupplier } from "@/lib/inventory/actions";
 
 async function SupplierTable() {
   const suppliers = await getSuppliers();
@@ -39,7 +41,10 @@ async function SupplierTable() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <SupplierFormDialog supplier={s} />
+                  <div className="flex justify-end gap-1">
+                    <SupplierFormDialog supplier={s} />
+                    <DeleteButton id={s.id} label={s.name} action={deleteSupplier} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

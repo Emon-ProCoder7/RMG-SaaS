@@ -2,6 +2,8 @@ import { PageHeader } from "@/components/page-header";
 import { CategoryToolbar } from "@/components/inventory/category-toolbar";
 import { getCategories, getItems } from "@/lib/inventory/queries";
 import { formatNumber } from "@/lib/format";
+import { DeleteButton } from "@/components/delete-button";
+import { deleteCategory } from "@/lib/inventory/actions";
 import {
   Table,
   TableBody,
@@ -33,14 +35,16 @@ export default async function CategoriesPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead className="text-right">Items</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead className="text-right">Items</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {categories.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={3} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
                   No categories yet.
                 </TableCell>
               </TableRow>
@@ -53,6 +57,9 @@ export default async function CategoriesPage() {
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
                     {formatNumber(counts.get(c.id) ?? 0)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DeleteButton id={c.id} label={c.name} action={deleteCategory} />
                   </TableCell>
                 </TableRow>
               ))

@@ -5,6 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DeleteButton } from "@/components/delete-button";
+import { deletePurchaseOrder } from "@/lib/inventory/actions";
 
 const STATUS_BADGES: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-300",
@@ -27,11 +29,12 @@ async function PurchaseTable() {
               <TableHead className="font-semibold text-amber-200">Expected</TableHead>
               <TableHead className="font-semibold text-amber-200 text-right">Total</TableHead>
               <TableHead className="font-semibold text-amber-200 text-center">Status</TableHead>
+              <TableHead className="font-semibold text-amber-200 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {orders.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No purchase orders yet.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No purchase orders yet.</TableCell></TableRow>
             ) : orders.map((po) => (
               <TableRow key={po.id} className="hover:bg-amber-500/5 transition-colors">
                 <TableCell className="font-mono text-sm font-medium">{po.po_number}</TableCell>
@@ -41,6 +44,9 @@ async function PurchaseTable() {
                 <TableCell className="text-right font-medium">{formatCurrency(po.total)}</TableCell>
                 <TableCell className="text-center">
                   <Badge className={STATUS_BADGES[po.status] ?? "bg-gray-500/15"}>{po.status}</Badge>
+                </TableCell>
+                <TableCell className="text-right">
+                  <DeleteButton id={po.id} label={po.po_number} action={deletePurchaseOrder} />
                 </TableCell>
               </TableRow>
             ))}
