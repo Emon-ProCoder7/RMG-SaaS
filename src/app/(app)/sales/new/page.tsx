@@ -14,7 +14,7 @@ import { createInvoice } from "@/lib/inventory/actions";
 import type { Customer, ItemWithCategory, SalePriceHistory } from "@/lib/inventory/types";
 import { useRouter } from "next/navigation";
 
-type LineItem = { tempId: string; itemId: string; barcode: string | null; description: string; qty: number; price: number; stock: number };
+type LineItem = { tempId: string; itemId: string; barcode: string | null; description: string; qty: number; price: number };
 
 export default function NewSalePage() {
   const router = useRouter();
@@ -80,7 +80,6 @@ export default function NewSalePage() {
         tempId: crypto.randomUUID(), itemId: item.id, barcode: item.barcode ?? null,
         description: item.name, qty: 1,
         price: priceHistory.get(item.id) ?? Number(item.sale_price),
-        stock: Number(item.quantity),
       }];
     });
     setItemSearch("");
@@ -91,6 +90,16 @@ export default function NewSalePage() {
   };
 
   const removeLine = (tempId: string) => setLineItems((prev) => prev.filter((l) => l.tempId !== tempId));
+
+  const stockMap = new Map(items.map(i => [i.id, Number(i.quantity)]));
+
+  function qtyInInvoice(itemId: string): number {
+    return lineItems.filter(l => l.itemId === itemId).reduce((s, l) => s + l.qty, 0);
+  }
+
+  function projectedStock(itemId: string): number {
+    return (stockMap.get(itemId) ?? 0) - qtyInInvoice(itemId);
+  }
 
   const subtotal = lineItems.reduce((s, l) => s + l.qty * l.price, 0);
   const discountAmount = subtotal * (discountPct / 100);
@@ -222,10 +231,12 @@ export default function NewSalePage() {
                           <p className="font-medium text-sm">{line.description}</p>
                           {line.barcode && <p className="text-xs text-muted-foreground">{line.barcode}</p>}
                         </TableCell>
-                        <TableCell className="text-center text-sm hidden md:table-cell">{line.stock}</TableCell>
+                        <TableCell className="text-center text-sm hidden md:table-cell">
+                          <span className={projectedStock(line.itemId) < 0 ? "text-rose-400" : ""}>{projectedStock(line.itemId)}</span>
+                        </TableCell>
                         <TableCell className="text-right">
-                          <Input type="number" min={1} max={line.stock} value={line.qty}
-                            onChange={(e) => updateLine(line.tempId, "qty", Math.max(1, Math.min(line.stock, parseInt(e.target.value) || 1)))}
+                          <Input type="number" min={1} max={projectedStock(line.itemId) + line.qty} value={line.qty}
+                            onChange={(e) => updateLine(line.tempId, "qty", Math.max(1, Math.min(projectedStock(line.itemId) + line.qty, parseInt(e.target.value) || 1)))}
                             className="w-20 h-8 text-right ml-auto" />
                         </TableCell>
                         <TableCell className="text-right">
