@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/format";
 import { calculateZakat, forecastDemand } from "@/lib/reports/client";
 import type { ZakatResult } from "@/lib/reports/client";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IndustrialSectionHeader } from "@/components/industrial/section-header";
 import { Card, CardContent } from "@/components/ui/card";
+import { RefreshCw, Database } from "lucide-react";
+import { fetchZakatData } from "@/lib/reports/actions";
 
 export function ZakatCalculator({
   inventoryValue: initialInventory,
@@ -21,6 +24,7 @@ export function ZakatCalculator({
   payables: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [pending, startTransition] = useTransition();
   const [cash, setCash] = useState(0);
   const [inventory, setInventory] = useState(initialInventory);
   const [receivables, setReceivables] = useState(initialReceivables);
@@ -28,13 +32,29 @@ export function ZakatCalculator({
 
   const result = calculateZakat(cash, inventory, receivables, payables);
 
+  const refresh = useCallback(() => {
+    startTransition(async () => {
+      const data = await fetchZakatData();
+      setInventory(data.inventoryValue);
+      setReceivables(data.receivables);
+      setPayables(data.payables);
+    });
+  }, []);
+
   useEffect(() => {
     if (ref.current) gsap.fromTo(ref.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
   }, []);
 
   return (
     <div ref={ref}>
-      <IndustrialSectionHeader title="Zakat Calculator" subtitle="Calculate 2.5% zakat on business assets (Hijri year)" />
+      <IndustrialSectionHeader title="Zakat Calculator" subtitle="Calculate 2.5% zakat on business assets (Hijri year)"
+        action={
+          <Button variant="outline" size="sm" onClick={refresh} disabled={pending} className="gap-1.5">
+            <RefreshCw className={`size-3.5 ${pending ? "animate-spin" : ""}`} />
+            Refresh
+          </Button>
+        }
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="border-0 shadow-md bg-gradient-to-br from-card to-green-900/20">
@@ -48,6 +68,10 @@ export function ZakatCalculator({
                 <Input type="number" value={receivables} onChange={(e) => setReceivables(parseFloat(e.target.value) || 0)} className="h-9" /></div>
               <div><Label className="text-xs text-amber-400">Payables (BDT)</Label>
                 <Input type="number" value={payables} onChange={(e) => setPayables(parseFloat(e.target.value) || 0)} className="h-9" /></div>
+            </div>
+            <div className="flex items-center gap-1.5 text-[10px] text-amber-400/50 pt-1">
+              <Database className="size-3" />
+              Inventory, receivables & payables auto-calculated from database
             </div>
           </CardContent>
         </Card>
