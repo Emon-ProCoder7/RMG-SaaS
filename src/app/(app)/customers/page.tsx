@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { getCustomers, getCustomerBalance } from "@/lib/inventory/queries";
 import { formatCurrency } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -7,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Eye, ArrowUpDown } from "lucide-react";
+import { Plus, ArrowUpDown } from "lucide-react";
 import { CustomerFormDialog } from "./customer-form-dialog";
+import { CustomerDetailDialog } from "./customer-detail-dialog";
 import { DeleteButton } from "@/components/delete-button";
 import { deleteCustomer } from "@/lib/inventory/actions";
 
@@ -59,11 +59,7 @@ async function CustomerTable() {
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-1">
                     <CustomerFormDialog customer={c} />
-                    <Link href={`/sales?customer=${c.id}`}>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Eye className="h-3.5 w-3.5" />
-                      </Button>
-                    </Link>
+                    <CustomerDetailDialog customer={c} initialBalance={balanceMap[c.id] ?? 0} />
                     <DeleteButton id={c.id} label={c.name} action={deleteCustomer} />
                   </div>
                 </TableCell>

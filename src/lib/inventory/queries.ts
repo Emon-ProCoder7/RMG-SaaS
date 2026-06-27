@@ -92,6 +92,15 @@ export async function getInvoices(): Promise<SaleInvoiceWithCustomer[]> {
   }, MOCK_INVOICES);
 }
 
+export async function getInvoicesByCustomer(customerId: string): Promise<SaleInvoiceWithCustomer[]> {
+  return queryOrMock("invoices", async () => {
+    const supabase = await sb();
+    const { data, error } = await supabase.from("sales_invoices").select("*, customer:customers(id, name)").eq("customer_id", customerId).order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as SaleInvoiceWithCustomer[];
+  }, MOCK_INVOICES.filter((i) => i.customer_id === customerId));
+}
+
 export async function getSaleItems(invoiceId: string): Promise<SaleItem[]> {
   return queryOrMock("sale_items", async () => {
     const supabase = await sb();

@@ -22,6 +22,7 @@ export default function NewSalePage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [items, setItems] = useState<ItemWithCategory[]>([]);
   const [customerId, setCustomerId] = useState<string>("");
+  const [customerCredit, setCustomerCredit] = useState<{ limit: number; balance: number; ledgerBook: string | null; name: string; mobile: string | null } | null>(null);
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [priceHistory, setPriceHistory] = useState<Map<string, number>>(new Map());
   const [itemSearch, setItemSearch] = useState("");
@@ -50,12 +51,23 @@ export default function NewSalePage() {
   }, []);
 
   useEffect(() => {
-    if (!customerId) { setPriceHistory(new Map()); return; }
+    if (!customerId) { setPriceHistory(new Map()); setCustomerCredit(null); return; }
     fetch(`/api/inventory?customer_id=${customerId}`).then((r) => r.json()).then((d) => {
       if (d.priceHistory) {
         const m = new Map<string, number>();
         d.priceHistory.forEach((p: SalePriceHistory) => m.set(p.item_id, p.last_price));
         setPriceHistory(m);
+      }
+    });
+    fetch(`/api/customers/${customerId}`).then((r) => r.json()).then((d) => {
+      if (d.customer) {
+        setCustomerCredit({
+          limit: d.customer.credit_limit,
+          balance: d.balance ?? 0,
+          ledgerBook: d.customer.ledger_book_no,
+          name: d.customer.name,
+          mobile: d.customer.mobile,
+        });
       }
     });
   }, [customerId]);
@@ -142,6 +154,21 @@ export default function NewSalePage() {
                     ))}
                   </SelectContent>
                 </Select>
+                {customerCredit && (
+                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs bg-amber-900/15 border border-amber-800/30 rounded-lg px-3 py-2">
+                    <span className="text-muted-foreground">
+                      Credit: <span className="text-amber-200 font-medium">{formatCurrency(customerCredit.limit)}</span>
+                    </span>
+                    <span className="text-muted-foreground">
+                      Balance: <span className={customerCredit.balance > 0 ? "text-amber-400 font-medium" : "text-green-400 font-medium"}>{formatCurrency(customerCredit.balance)}</span>
+                    </span>
+                    {customerCredit.ledgerBook && (
+                      <span className="text-muted-foreground">
+                        Ledger: <span className="text-amber-200 font-medium">{customerCredit.ledgerBook}</span>
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="relative mb-4">

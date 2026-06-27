@@ -9,6 +9,7 @@ export default function PrintInvoicePage() {
   const { id } = useParams();
   const printRef = useRef<HTMLDivElement>(null);
   const [invoice, setInvoice] = useState<SaleInvoiceWithCustomer | null>(null);
+  const [hideDue, setHideDue] = useState(false);
   const [items, setItems] = useState<SaleItem[]>([]);
   const [customer, setCustomer] = useState<Customer | null>(null);
 
@@ -40,10 +41,15 @@ export default function PrintInvoicePage() {
         }
       `}</style>
 
-      <div className="no-print text-center mb-4">
+      <div className="no-print text-center mb-4 space-y-2">
         <button onClick={() => window.print()} className="px-4 py-2 bg-gold-metallic text-black font-semibold rounded-lg shadow-md hover:brightness-110">
           Print Invoice
         </button>
+        <div className="flex items-center justify-center gap-2 text-sm">
+          <input id="hideDue" type="checkbox" checked={hideDue} onChange={(e) => setHideDue(e.target.checked)}
+            className="h-4 w-4 rounded border-amber-800/40 accent-amber-500" />
+          <label htmlFor="hideDue" className="text-muted-foreground cursor-pointer">Hide Due Amount</label>
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto p-8" style={{ fontFamily: "'Courier New', monospace", background: "white", color: "#1a1a1a" }}>
@@ -116,7 +122,7 @@ export default function PrintInvoicePage() {
               <div className="flex justify-between py-0.5 text-green-700">
                 <span>Paid:</span><span>{formatCurrency(invoice.amount_paid)}</span>
               </div>
-              {invoice.balance_due > 0 && (
+              {invoice.balance_due > 0 && !hideDue && (
                 <div className="flex justify-between py-0.5 text-amber-700 font-bold">
                   <span>Balance Due:</span><span>{formatCurrency(invoice.balance_due)}</span>
                 </div>
